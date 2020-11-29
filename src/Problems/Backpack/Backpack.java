@@ -1,78 +1,124 @@
 package Problems.Backpack;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Backpack {
-    // brute force
+    public int capacity;
+    public int limitWeight;
+    public List<Item> itemList;
 
-    // greedy
-    public static double knapSackGreedy(int capacity, int[] items, int[] weight) {
-        ItemValue[] iVal = new ItemValue[weight.length];
+    public Backpack(int capacity, int limitWeight) {
+        this.capacity = capacity;
+        this.limitWeight = limitWeight;
+        this.itemList = new ArrayList<Item>();
+    }
 
-        for (int i = 0; i < weight.length; i++) {
-            iVal[i] = new ItemValue(weight[i], items[i], i);
+    public static void printBackpack(Set<Item> itemList) {
+        for (Item item : itemList) {
+            System.out.println(item);
+        }
+    }
+
+    public void addItem(Item item) {
+        if (itemList.contains(item))
+            return;
+        itemList.add(item);
+    }
+
+    private int calculateWeight(Set<Item> setItems) {
+        int totalWeight = 0;
+        for (Item item : setItems) {
+            totalWeight += item.weight;
         }
 
-        // sorting items by value;
-        Arrays.sort(iVal, new Comparator<ItemValue>() {
-            @Override
-            public int compare(ItemValue o1, ItemValue o2) {
-                return o2.cost.compareTo(o1.cost);
-            }
-        });
+        return totalWeight;
+    }
 
-        double totalValue = 0d;
-
-        for (ItemValue i : iVal) {
-
-            int curWt = (int) i.wt;
-            int curVal = (int) i.val;
-
-            if (capacity - curWt >= 0) {
-                // this weight can be picked while
-                capacity = capacity - curWt;
-                totalValue += curVal;
-            } else {
-                // item cant be picked whole
-                double fraction = ((double) capacity / (double) curWt);
-                totalValue += (curVal * fraction);
-                capacity = (int) (capacity - (curWt * fraction));
-                break;
-            }
+    private int calculateValue(Set<Item> setItems) {
+        int totalValue = 0;
+        for (Item item : setItems) {
+            totalValue += item.value;
         }
 
         return totalValue;
     }
 
-    static class ItemValue {
-        Double cost;
-        double wt, val, ind;
+    private void chooseBest(Set<Item> setItems, int index, Set<Item> bestItems) {
+        if (calculateValue(setItems) > calculateValue(bestItems)) {
+            bestItems.clear();
+            bestItems.addAll(setItems);
+        }
 
-        public ItemValue(int wt, int val, int ind) {
-            this.wt = wt;
-            this.val = val;
-            this.ind = ind;
-            cost = (double) val / (double) wt;
+        for (Item item : this.itemList) {
+            if (setItems.contains(item))
+                continue;
+            if (calculateWeight(setItems) + item.weight > this.limitWeight)
+                continue;
+
+            setItems.add(item);
+            chooseBest(setItems, index + 1, bestItems);
+            setItems.remove(item);
         }
     }
 
-    //#region dynamic programming
-    public static int knapSackDynamic(Item[] items, int capacity) {
-        int[][] table = new int[items.length + 1][capacity + 1];
+    public static double solveDynamic(int[] w, int[] p, int i, int c, int[][] DP) {
+        if (c < 0) {
+            double inf = Double.POSITIVE_INFINITY;
+            return inf *= -1;
+        } else if (i == 0 || c == 0) {
+            return 0;
+        } else {
+            if (DP[i][c] < 0) {
+                int notTaken = (int) solveDynamic(w, p, i - 1, c, DP);
+                int taken = (int) solveDynamic(w, p, i - 1, c - w[i - 1], DP) + p[i - 1];
+                DP[i][c] = Math.max(notTaken, taken);
+            }
 
-        for (int i = 1; i <= items.length; i++) {
-            for (int j = 1; j <= capacity; j++) {
-                if (items[i - 1].getWeight() <= j) {
-                    table[i][j] = Math.max(items[i - 1].getValue() + table[i - 1][j - items[i - 1].getWeight()],
-                            table[i - 1][j]);
-                } else {
-                    table[i][j] = table[i - 1][j];
-                }
+            return DP[i][c];
+        }
+    }
+
+    public static int dynamicMethod(int[] w, int[] p, int n, int C) {
+        int[][] DP = new int[n][C];
+        for (int i = 1; i >= n; i++) {
+            for (int c = 1; i >= C; c++) {
+                DP[i][c] = -1;
             }
         }
-
-        return table[items.length][capacity];
+        return (int) solveDynamic(w, p, n, C, DP);
     }
-    // #endregion
+
+    public Set<Item> solveDynamic() {
+        Set<Item> setItems = new HashSet<Item>();
+        Set<Item> bestItems = new HashSet<Item>();
+        chooseBest(setItems, 0, bestItems);
+        return bestItems;
+    }
+
+    public int[] getWeightItems() {
+        int[] weightItems = new int[this.capacity];
+        for (int i = 0; i < this.capacity; i += 1) {
+            weightItems[i] = itemList.get(i).weight;
+        }
+        return weightItems;
+    }
+
+    public int[] getValueItems() {
+        int[] valueItems = new int[this.capacity];
+        for (int i = 0; i < this.capacity; i += 1) {
+            valueItems[i] = itemList.get(i).value;
+        }
+        return valueItems;
+    }
+
+    public String[] getNameItems() {
+        String[] nameItems = new String[this.capacity];
+        for (int i = 0; i < this.capacity; i += 1) {
+            nameItems[i] = itemList.get(i).name;
+        }
+        return nameItems;
+    }
 }
