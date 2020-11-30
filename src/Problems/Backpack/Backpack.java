@@ -7,12 +7,10 @@ import java.util.Set;
 
 public class Backpack {
     public int capacity;
-    public int limitWeight;
     public List<Item> itemList;
 
-    public Backpack(int capacity, int limitWeight) {
+    public Backpack(int capacity) {
         this.capacity = capacity;
-        this.limitWeight = limitWeight;
         this.itemList = new ArrayList<Item>();
     }
 
@@ -25,6 +23,7 @@ public class Backpack {
     public void addItem(Item item) {
         if (itemList.contains(item))
             return;
+
         itemList.add(item);
     }
 
@@ -55,7 +54,7 @@ public class Backpack {
         for (Item item : this.itemList) {
             if (setItems.contains(item))
                 continue;
-            if (calculateWeight(setItems) + item.weight > this.limitWeight)
+            if (calculateWeight(setItems) + item.weight > this.capacity)
                 continue;
 
             setItems.add(item);
@@ -99,24 +98,24 @@ public class Backpack {
     }
 
     public int[] getWeightItems() {
-        int[] weightItems = new int[this.capacity];
-        for (int i = 0; i < this.capacity; i += 1) {
+        int[] weightItems = new int[itemList.size()];
+        for (int i = 0; i < itemList.size(); i += 1) {
             weightItems[i] = itemList.get(i).weight;
         }
         return weightItems;
     }
 
     public int[] getValueItems() {
-        int[] valueItems = new int[this.capacity];
-        for (int i = 0; i < this.capacity; i += 1) {
+        int[] valueItems = new int[itemList.size()];
+        for (int i = 0; i < itemList.size(); i += 1) {
             valueItems[i] = itemList.get(i).value;
         }
         return valueItems;
     }
 
     public String[] getNameItems() {
-        String[] nameItems = new String[this.capacity];
-        for (int i = 0; i < this.capacity; i += 1) {
+        String[] nameItems = new String[itemList.size()];
+        for (int i = 0; i < itemList.size(); i += 1) {
             nameItems[i] = itemList.get(i).name;
         }
         return nameItems;

@@ -23,7 +23,7 @@ public class BruteForce {
     public void printSolution() {
         int i = n - 1;
         int j = P;
-        System.out.println("Items:");
+
         while (i >= 0) {
             if (K[i][j]) {
                 System.out.println(names[i] + " weight: " + p[i] + " value: " + v[i]);

@@ -18,7 +18,7 @@ public class Item {
 	}
 
 	public static Item generateRandomItem(int capacity) {
-		int weight = randomValue(1, capacity * capacity);
+		int weight = randomValue(1, capacity);
 		int value = randomValue(1, capacity);
 		String name = "Item " + counter;
 		return new Item(weight, value, name);
@@ -52,6 +52,6 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return this.name + ": weight " + this.weight + "  value: " + this.value;
+		return this.name + ": weight " + this.weight + " value: " + this.value;
 	}
 }
