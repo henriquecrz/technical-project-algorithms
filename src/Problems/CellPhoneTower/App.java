@@ -2,6 +2,7 @@ package Problems.CellPhoneTower;
 
 public class App {
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         int columns = 6;
         int rows = 6;
         Item[][] map = new Item[rows][columns];
@@ -29,5 +30,8 @@ public class App {
         }
 
         System.out.println("Number of fields filled " + Item.counter + " of " + rows * columns);
+        long end = System.currentTimeMillis();
+        System.out.println();
+        System.out.println("Solved in: " + (end - start) + "ms");
     }
 }

@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 class App {
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         Calendar cOpenAt = new GregorianCalendar(2020, Calendar.JULY, 22, 10, 0);
         Date openAt = cOpenAt.getTime();
 
@@ -33,5 +34,8 @@ class App {
         schedule2.addTask(taskToAdd5);
 
         auditorium.printScheduleList();
+        long end = System.currentTimeMillis();
+        System.out.println();
+        System.out.println("Solved in: " + (end - start) + "ms");
     }
 }
