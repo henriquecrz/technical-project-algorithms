@@ -16,7 +16,7 @@ public class App {
         for (int row = 0; row < rows; row += 1) {
             for (int column = 0; column < columns; column += 1) {
                 Item current = map[row][column];
-                current.fillTower(map, propagation, column, row);
+                current.fillTower(map, propagation, column, row, columns, rows);
             }
         }
 
@@ -24,6 +24,7 @@ public class App {
             for (Item item : itemMap) {
                 System.out.print(item);
             }
+
             System.out.println();
         }
 
