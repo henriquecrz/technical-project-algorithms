@@ -17,7 +17,7 @@ class Supermarket {
         return productList;
     }
 
-    public static void bruteForce(Product[] products, float limitWeight, double limitPrice) {
+    public static List<Product> bruteForce(Product[] products, float limitWeight, double limitPrice) {
         System.out.println("\nBrute force:");
         long start = System.currentTimeMillis();
 
@@ -26,9 +26,10 @@ class Supermarket {
 
         long end = System.currentTimeMillis();
         System.out.println(sortedBoth.size() + " items: " + (end - start) + "ms");
+        return sortedBoth;
     }
 
-    public static void divideAndConquer(Product[] products, float limitWeight, double limitPrice) {
+    public static List<Product> divideAndConquer(Product[] products, float limitWeight, double limitPrice) {
         System.out.println("\nMerge Sort:");
         long start = System.currentTimeMillis();
 
@@ -37,7 +38,6 @@ class Supermarket {
         List<Product> sortedBoth = loadList(products, limitWeight, limitPrice);
 
         System.out.println(sortedBoth.size() + " items: " + (end - start) + "ms");
+        return sortedBoth;
     }
-
-    
 }

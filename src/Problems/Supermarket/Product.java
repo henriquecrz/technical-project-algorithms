@@ -1,5 +1,7 @@
 package Problems.Supermarket;
 
+import java.util.List;
+
 public class Product {
     private static int counter = 0;
     public double price;
@@ -16,13 +18,13 @@ public class Product {
     }
 
     private static double randomValue(int min, int max) {
-        return (Math.random() * ((max - min) + 1)) + min;
+        return (Math.random()*((max - min) + 1)) + min;
     }
-
+    
     public static Product[] fillProducts(Product[] products) {
-        for (int i = 0; i < products.length; i += 1) {
+        for(int i = 0; i < products.length; i += 1) {
             double randomPrice = randomValue(10, 20);
-            float randomWeight = (float) randomValue(10, 20);
+            float randomWeight = (float)randomValue(10, 20);
             String productName = "Produto " + i;
             products[i] = new Product(randomPrice, productName, randomWeight);
         }
@@ -31,7 +33,7 @@ public class Product {
     }
 
     public float compareBoth() {
-        return this.weight + (float) this.price;
+        return (this.weight + (float)this.price) / 2;
     }
 
     public static void sortBoth(Product[] products) {
@@ -47,5 +49,16 @@ public class Product {
                 }
             }
         }
+    }
+
+    public static void printList(List<Product> products) {
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - Peso: %.2f - Preco: %.2f", this.name, this.weight, this.price);
     }
 }
